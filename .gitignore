@@ -1,1 +1,13 @@
-shell-apps/*.app
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+*.swp
+*.swo
+*~
+
+# Backup
+*.bak
+
+.zshrc00
