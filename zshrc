@@ -41,6 +41,7 @@ source $ZSH/oh-my-zsh.sh
 
 # Set personal aliases
 # alias zshconfig="~/.config/zshrc"
+alias zz="source ~/.zshrc"
 
 # Add brew to PATH
 eval "$(/usr/local/bin/brew shellenv zsh)"
