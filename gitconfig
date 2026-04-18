@@ -1,7 +1,5 @@
 [credential]
 	helper = store
-[url "git://github.com/"]
-	insteadOf = https://github.com/
 [pull]
 	rebase = true
 [alias]
@@ -35,3 +33,7 @@
 [user]
 	name = Edgar Quasar
 	email = edgarquasarz@proton.me
+[url "git@github.com:"]
+	insteadOf = https://github.com/
+[url "git://"]
+	insteadOf = https://
