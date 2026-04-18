@@ -61,13 +61,10 @@ echo "🔗 Linking dotfiles..."
 ln -sf "$DOTFILES_DIR/zshrc" "$HOME_DIR/.zshrc"
 ln -sf "$DOTFILES_DIR/gitconfig" "$HOME_DIR/.gitconfig"
 mkdir -p "$HOME_DIR/.config"
+rm -rf "$HOME_DIR/.config/nvim"
+ln -sf "$DOTFILES_DIR/config/nvim" "$HOME_DIR/.config/nvim"
 ln -sf "$DOTFILES_DIR/config/alacritty" "$HOME_DIR/.config/alacritty"
 ln -sf "$DOTFILES_DIR/config/zellij" "$HOME_DIR/.config/zellij"
-
-if [ ! -d "$HOME_DIR/.config/nvim" ] || [ ! -L "$HOME_DIR/.config/nvim" ]; then
-    rm -rf "$HOME_DIR/.config/nvim"
-    ln -sf "$DOTFILES_DIR/config/nvim" "$HOME_DIR/.config/nvim"
-fi
 
 # Setup Oh My Zsh if not present
 if [ ! -d "$HOME_DIR/.oh-my-zsh" ]; then
