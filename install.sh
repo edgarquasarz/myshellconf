@@ -42,6 +42,8 @@ if [ "$OS" = "Darwin" ]; then
         zellij
         alacritty
         fnm
+        bat
+        htop
     )
 
     for tool in "${CORE_TOOLS[@]}"; do
