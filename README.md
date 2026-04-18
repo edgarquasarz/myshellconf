@@ -11,7 +11,7 @@ Dotfiles to set up a development environment on a new machine.
 
 ```bash
 # 1. Clone the repo
-git clone git@github.com:edgarquasarz/myshellconf.git ~/myshellconf
+git clone git@github.com:txomin-jimenez/myshellconf.git ~/myshellconf
 cd ~/myshellconf
 
 # 2. Run the installer (installs packages + links dotfiles)
