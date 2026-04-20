@@ -1,5 +1,5 @@
-[terminal.shell]
-  program = "/usr/local/bin/zellij"
+#[terminal.shell]
+#  program = "/usr/local/bin/zellij"
 
 [window]
 #padding.x = 16

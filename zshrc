@@ -21,6 +21,7 @@ alias zz="source ~/.zshrc"
 alias zrc="nvim ~/.zshrc"
 alias zrc00="nvim ~/.zshrc00"
 alias ghconfig="nvim ~/.gitconfig"
+alias setup-zellij-sendkeys="source /Users/user/dev/myshellconf/config/zellij/scripts/setup-env.sh"
 
 # Dev shortcuts
 alias dev="cd ~/dev"
@@ -118,3 +119,4 @@ eval "$(zoxide init zsh)"
 if [ -f "$HOME/.zshrc00" ]; then
   source "$HOME/.zshrc00"
 fi
+export ZELLIJ_SOCKET_DIR="/tmp/zellij"

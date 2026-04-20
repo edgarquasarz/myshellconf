@@ -35,6 +35,31 @@ if [ "$OS" = "Darwin" ]; then
         echo "  ✓ zoxide already installed"
     fi
 
+    # Install jq (required for zellij-send-keys)
+    if ! command -v jq &> /dev/null; then
+        echo "  ↳ installing jq..."
+        brew install jq 2>/dev/null || echo "  ⚠ jq failed to install"
+    else
+        echo "  ✓ jq already installed"
+    fi
+
+    # Install zellij plugins
+    mkdir -p "$HOME/.config/zellij/plugins"
+    if [ ! -f "$HOME/.config/zellij/plugins/zellij-favs.wasm" ]; then
+        echo "  ↳ installing zellij-favs..."
+        curl -L https://github.com/JoseMM2002/zellij-favs/releases/download/v1.0.1/zellij-favs.wasm \
+            -o "$HOME/.config/zellij/plugins/zellij-favs.wasm" 2>/dev/null || echo "  ⚠ zellij-favs failed"
+    else
+        echo "  ✓ zellij-favs already installed"
+    fi
+    if [ ! -f "$HOME/.config/zellij/plugins/zellij-send-keys.wasm" ]; then
+        echo "  ↳ installing zellij-send-keys..."
+        curl -L https://github.com/atani/zellij-send-keys/releases/latest/download/zellij-send-keys.wasm \
+            -o "$HOME/.config/zellij/plugins/zellij-send-keys.wasm" 2>/dev/null || echo "  ⚠ zellij-send-keys failed"
+    else
+        echo "  ✓ zellij-send-keys already installed"
+    fi
+
     CORE_TOOLS=(
         neovim
         git
