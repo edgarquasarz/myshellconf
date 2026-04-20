@@ -78,6 +78,8 @@ if [ "$OS" = "Darwin" ]; then
         bat
         htop
         yazi
+        starship
+        delta
     )
 
     for tool in "${CORE_TOOLS[@]}"; do

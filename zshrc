@@ -120,4 +120,7 @@ eval "$(zoxide init zsh)"
 if [ -f "$HOME/.zshrc00" ]; then
   source "$HOME/.zshrc00"
 fi
+
+# starship prompt
+eval "$(starship init zsh)"
 export ZELLIJ_SOCKET_DIR="/tmp/zellij"
