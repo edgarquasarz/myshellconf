@@ -27,6 +27,14 @@ if [ "$OS" = "Darwin" ]; then
     echo "📦 Installing core tools..."
     [ ! -d "$HOME/.local/bin" ] && mkdir -p "$HOME/.local/bin"
 
+    # Install zoxide
+    if [ ! -f "$HOME/.local/bin/zoxide" ]; then
+        echo "  ↳ installing zoxide..."
+        curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh 2>/dev/null || echo "  ⚠ zoxide failed to install"
+    else
+        echo "  ✓ zoxide already installed"
+    fi
+
     CORE_TOOLS=(
         neovim
         git

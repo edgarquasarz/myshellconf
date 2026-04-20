@@ -110,6 +110,10 @@ alias path="echo \$PATH | tr ':' '\n'"
 export FNM_BASEDIR="$HOME/.local/share/fnm"
 eval "$(fnm env --use-on-cd 2>/dev/null || true)"
 
+# zoxide - smarter cd
+export PATH="$HOME/.local/bin:$PATH"
+eval "$(zoxide init zsh)"
+
 # Load personal extra config if present
 if [ -f "$HOME/.zshrc00" ]; then
   source "$HOME/.zshrc00"
