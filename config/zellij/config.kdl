@@ -136,6 +136,13 @@ keybinds clear-defaults=true {
             }
             SwitchToMode "normal"
         }
+        bind "f" {
+            LaunchOrFocusPlugin "file:~/.config/zellij/plugins/zellij-favs.wasm" {
+                floating true
+                display_tab_panes true
+            }
+            SwitchToMode "normal"
+        }
     }
     shared_except "locked" {
         bind "Alt left" { MoveFocusOrTab "left"; }
@@ -274,11 +281,6 @@ load_plugins {
 }
 web_client {
     font "monospace"
-}
-
-session_manager {
-    listen_address "0.0.0.0:6789"
-    allow_remote true
 }
  
 // Use a simplified UI without special fonts (arrow glyphs)
