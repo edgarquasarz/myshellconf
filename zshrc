@@ -105,6 +105,7 @@ alias ..="cd .."
 alias ...="cd ../.."
 alias ....="cd ../../.."
 alias cl="clear"
+alias yy="yazi"
 alias path="echo \$PATH | tr ':' '\n'"
 
 # fnm - Fast Node Manager

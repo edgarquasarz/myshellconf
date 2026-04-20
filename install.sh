@@ -77,6 +77,7 @@ if [ "$OS" = "Darwin" ]; then
         fnm
         bat
         htop
+        yazi
     )
 
     for tool in "${CORE_TOOLS[@]}"; do
