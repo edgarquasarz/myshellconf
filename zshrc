@@ -98,7 +98,7 @@ case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
-
+export PATH="/Users/user/.local/pnpm:$PATH"
 # Helpers
 alias ~="cd ~"
 alias ..="cd .."
