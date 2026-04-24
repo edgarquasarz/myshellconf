@@ -60,7 +60,6 @@ alias ls="eza"
 alias find="fd"
 alias top="htop"
 alias lg="lazygit"
-alias rg="ripgrep"
 
 # Development
 alias ni="npm install"
