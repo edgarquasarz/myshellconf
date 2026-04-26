@@ -11,3 +11,5 @@ Thumbs.db
 *.bak
 
 .zshrc00
+.stfolder/
+.stignore
