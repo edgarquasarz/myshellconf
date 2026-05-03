@@ -80,7 +80,6 @@ if [ "$OS" = "Darwin" ]; then
     yazi
     starship
     delta
-    worktrunk
   )
 
   for tool in "${CORE_TOOLS[@]}"; do
@@ -143,4 +142,3 @@ echo ""
 echo "✅ Setup complete!"
 echo ""
 echo "💡 Restart your terminal or run: source ~/.zshrc"
-
