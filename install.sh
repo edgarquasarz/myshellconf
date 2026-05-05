@@ -60,6 +60,10 @@ if [ "$OS" = "Darwin" ]; then
     echo "  ✓ zellij-send-keys already installed"
   fi
 
+  # Install @rivolink/leaf globally
+  echo "  ↳ installing @rivolink/leaf..."
+  npm install -g @rivolink/leaf 2>/dev/null || echo "  ⚠ @rivolink/leaf failed to install"
+
   CORE_TOOLS=(
     neovim
     git
