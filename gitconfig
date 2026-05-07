@@ -39,6 +39,7 @@
 	insteadOf = https://
 [init]
 	defaultBranch = main
+	templateDir = /Users/user/.git-template
 [pager]
 	diff = delta
 	log = delta
