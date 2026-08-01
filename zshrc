@@ -107,6 +107,8 @@ alias cl="clear"
 alias yy="yazi"
 alias path="echo \$PATH | tr ':' '\n'"
 
+export TERM=xterm-256color
+
 # fnm - Fast Node Manager
 export FNM_BASEDIR="$HOME/.local/share/fnm"
 eval "$(fnm env --use-on-cd 2>/dev/null || true)"
