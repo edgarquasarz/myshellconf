@@ -13,3 +13,6 @@ Thumbs.db
 .zshrc00
 .stfolder/
 .stignore
+
+# studio-os task worktrees (managed by task.py wt) — never commit these
+.claude/worktrees/
