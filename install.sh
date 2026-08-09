@@ -187,9 +187,31 @@ if [ "$PKG_MGR" = "apt" ]; then
   apt_install git
   apt_install gh
   apt_install fzf
-  apt_install fd-find fd
+  # fd-find ships as `fdfind` on Debian/Ubuntu (name collision with another tool).
+  # Verify against the actual binary name, then expose `fd` via ~/.local/bin symlink
+  # so the user's PATH resolves the familiar command.
+  apt_install fd-find fdfind
+  if command -v fdfind &>/dev/null && [ ! -e "$HOME/.local/bin/fd" ]; then
+    ln -sf "$(command -v fdfind)" "$HOME/.local/bin/fd"
+    echo "  ↳ symlinked ~/.local/bin/fd -> $(command -v fdfind)"
+  fi
   apt_install ripgrep
-  apt_install bat
+  # bat may install as `batcat` on Debian 12+ (name conflict). Try `bat` first;
+  # if absent, fall back to `batcat` and symlink the canonical `bat` name into
+  # ~/.local/bin so user config and aliases resolve it deterministically.
+  if command -v bat &>/dev/null; then
+    echo "  ✓ bat already installed"
+  elif command -v batcat &>/dev/null; then
+    echo "  ✓ batcat already installed (creating 'bat' symlink if missing)"
+    [ ! -e "$HOME/.local/bin/bat" ] && ln -sf "$(command -v batcat)" "$HOME/.local/bin/bat"
+  else
+    echo "  ↳ installing bat via apt..."
+    sudo apt-get install -y bat &>/dev/null || echo "  � bat failed to install"
+    # Post-install: if apt shipped `batcat`, surface it as `bat` for consistency.
+    if command -v batcat &>/dev/null && [ ! -e "$HOME/.local/bin/bat" ]; then
+      ln -sf "$(command -v batcat)" "$HOME/.local/bin/bat"
+    fi
+  fi
   apt_install htop
   apt_install zellij
 
@@ -322,11 +344,25 @@ if [ "$PKG_MGR" = "apt" ]; then
       echo "  ✓ neovim $NVIM_VERSION_RAW ≥ 0.10"
     else
       echo "  ↳ neovim apt version $NVIM_VERSION_RAW < 0.10 — installing AppImage..."
+      # AppImage requires FUSE (fusermount) at runtime. Containers, WSL, and
+      # some locked-down distros lack it. Detect FUSE; if absent, extract the
+      # AppImage and symlink the AppRun binary so nvim remains executable.
       (curl -sLo /tmp/nvim.appimage https://github.com/neovim/neovim/releases/latest/download/nvim.appimage \
          && chmod +x /tmp/nvim.appimage \
-         && mv /tmp/nvim.appimage "$HOME/.local/bin/nvim") \
+         && if command -v fusermount &>/dev/null; then
+              mv /tmp/nvim.appimage "$HOME/.local/bin/nvim"
+              echo "  ↳ using AppImage runtime (FUSE available)"
+            else
+              echo "  ⚠ fusermount not found — extracting AppImage (FUSE-less mode)..."
+              mkdir -p /tmp/nvim-extracted
+              (cd /tmp/nvim-extracted && /tmp/nvim.appimage --appimage-extract &>/dev/null) \
+                && rm -f "$HOME/.local/bin/nvim" \
+                && ln -sf /tmp/nvim-extracted/squashfs-root/AppRun "$HOME/.local/bin/nvim" \
+                && rm -f /tmp/nvim.appimage \
+                && echo "  ↳ extracted AppImage to /tmp/nvim-extracted, symlinked AppRun"
+            fi) \
         || echo "  ⚠ neovim AppImage failed to install"
-      if [ -x "$HOME/.local/bin/nvim" ]; then
+      if [ -x "$HOME/.local/bin/nvim" ] || [ -L "$HOME/.local/bin/nvim" ]; then
         echo "  ✓ neovim AppImage installed to ~/.local/bin/nvim"
       fi
     fi
