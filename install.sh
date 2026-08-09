@@ -382,6 +382,13 @@ ln -sf "$DOTFILES_DIR/config/alacritty" "$HOME_DIR/.config/alacritty"
 ln -sf "$DOTFILES_DIR/config/zellij" "$HOME_DIR/.config/zellij"
 ln -sf "$DOTFILES_DIR/config/starship.toml" "$HOME_DIR/.config/starship.toml"
 
+# Linux: swap Apple logo glyph for Tux. cp breaks the symlink so the
+# repo's canonical starship.toml (macOS-targeted) is not mutated.
+if [ "$OS" != "Darwin" ]; then
+  cp "$DOTFILES_DIR/config/starship.toml" "$HOME_DIR/.config/starship.toml"
+  sed -i 's/\xee\x9c\x91/\xef\x85\xbc/g' "$HOME_DIR/.config/starship.toml"
+fi
+
 # Setup Oh My Zsh if not present
 if [ ! -d "$HOME_DIR/.oh-my-zsh" ]; then
   echo "📝 Installing Oh My Zsh..."
