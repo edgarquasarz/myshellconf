@@ -31,15 +31,17 @@
 [core]
 	whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol
 [user]
-	name = Edgar Quasar
-	email = edgarquasarz@proton.me
+	# Personal info: set per-machine with `git config --global user.name "..."`
+	# and `git config --global user.email "..."`. Left commented as placeholder.
+	# name = Your Name
+	# email = you@example.com
 [url "git@github.com:"]
 	insteadOf = https://github.com/
 [url "git://"]
 	insteadOf = https://
 [init]
 	defaultBranch = main
-	templateDir = /Users/user/.git-template
+	templateDir = ~/.git-template
 [pager]
 	diff = delta
 	log = delta

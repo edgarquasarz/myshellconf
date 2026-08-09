@@ -20,7 +20,7 @@ else
     export ZELLIJ_SESSION_NAME="$local_session"
 fi
 
-export ZELLIJ_PLUGIN="file:/Users/user/dev/myshellconf/config/zellij/plugins/zellij-send-keys.wasm"
+export ZELLIJ_PLUGIN="file:$HOME/myshellconf/config/zellij/plugins/zellij-send-keys.wasm"
 
 # Helper function for sending to any pane (using jq for safe JSON encoding)
 send-to-pane() {

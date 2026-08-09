@@ -148,7 +148,7 @@ keybinds clear-defaults=true {
             SwitchToMode "normal"
         }
         bind "k" {
-            LaunchOrFocusPlugin "file:/Users/user/dev/myshellconf/config/zellij/plugins/zellij-send-keys.wasm" {
+            LaunchOrFocusPlugin "file:$HOME/myshellconf/config/zellij/plugins/zellij-send-keys.wasm" {
                 floating true
                 display_tab_panes true
             }

@@ -370,11 +370,6 @@ for plugin in "${USEFUL_PLUGINS[@]}"; do
   fi
 done
 
-# Update Oh My Zsh theme to match terminal
-if [ -f "$HOME_DIR/.zshrc" ]; then
-  sed -i '' 's/^ZSH_THEME="robbyrussell"/ZSH_THEME="robbyrussell"/' "$HOME_DIR/.zshrc" 2>/dev/null || true
-fi
-
 # Run Neovim LazySync if nvim is available
 if command -v nvim &>/dev/null; then
   echo "⚡ Running LazySync..."

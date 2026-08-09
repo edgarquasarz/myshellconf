@@ -1,5 +1,7 @@
 # Add brew to PATH
-eval "$(/usr/local/bin/brew shellenv zsh 2>/dev/null || true)"
+if [ "$(uname -s)" = "Darwin" ]; then
+  eval "$(/usr/local/bin/brew shellenv zsh 2>/dev/null || true)"
+fi
 
 # Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
@@ -13,7 +15,9 @@ plugins=(git fzf)
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
-export MANPATH="/usr/local/man:$MANPATH"
+if [ "$(uname -s)" = "Darwin" ]; then
+  export MANPATH="/usr/local/man:$MANPATH"
+fi
 export LANG=en_US.UTF-8
 
 # Set personal aliases
@@ -21,7 +25,7 @@ alias zz="source ~/.zshrc"
 alias zrc="nvim ~/.zshrc"
 alias zrc00="nvim ~/.zshrc00"
 alias ghconfig="nvim ~/.gitconfig"
-alias setup-zellij-sendkeys="source /Users/user/dev/myshellconf/config/zellij/scripts/setup-env.sh"
+alias setup-zellij-sendkeys="source $HOME/myshellconf/config/zellij/scripts/setup-env.sh"
 
 # Dev shortcuts
 alias dev="cd ~/dev"
@@ -84,20 +88,31 @@ alias dlog="docker logs -f"
 alias dprune="docker system prune -af"
 
 # Path setup
-export PATH="/usr/local/bin:$PATH"
-export PATH="/usr/local/opt/node@22/bin:$PATH"
+if [ "$(uname -s)" = "Darwin" ]; then
+  export PATH="/usr/local/bin:$PATH"
+  export PATH="/usr/local/opt/node@22/bin:$PATH"
+fi
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
 # pnpm
-export PNPM_HOME="/Users/user/Library/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-export PATH="/Users/user/.local/pnpm:$PATH"
+if [ "$(uname -s)" = "Darwin" ]; then
+  export PNPM_HOME="/Users/user/Library/pnpm"
+  case ":$PATH:" in
+    *":$PNPM_HOME:"*) ;;
+    *) export PATH="$PNPM_HOME:$PATH" ;;
+  esac
+  export PATH="/Users/user/.local/pnpm:$PATH"
+else
+  # Linux default pnpm location (set by `pnpm` setup or npm install -g)
+  export PNPM_HOME="$HOME/.local/share/pnpm"
+  case ":$PATH:" in
+    *":$PNPM_HOME:"*) ;;
+    *) export PATH="$PNPM_HOME:$PATH" ;;
+  esac
+fi
 # Helpers
 alias ~="cd ~"
 alias ..="cd .."
