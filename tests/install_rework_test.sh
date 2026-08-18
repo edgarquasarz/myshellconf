@@ -26,6 +26,12 @@ assert_contains 'lazygit_\$\{LAZYGIT_VERSION\}_linux_\$\{LG_ARCH\}\.tar\.gz' \
   'lazygit fallback must use the versioned lowercase release asset name'
 assert_contains 'releases/download/v\$\{LAZYGIT_VERSION\}/\$LAZYGIT_TARBALL' \
   'lazygit fallback must download from the resolved version tag'
+assert_contains 'armv7l\)[[:space:]]+LG_ARCH="armv6"' \
+  'lazygit armv7l must map to the armv6 asset (lazygit does not publish armv7)'
+assert_not_contains 'armv7l\)[[:space:]]+LG_ARCH="armv7"' \
+  'lazygit armv7l mapping to nonexistent armv7 asset is a regression'
+assert_contains 'arm64/armv6 variants' \
+  'lazygit comment must list the actually published linux arm variants'
 assert_contains 'aarch64\)[[:space:]]+NVIM_TARBALL_ARCH="arm64"' \
   'Neovim aarch64 mapping must use the arm64 asset suffix'
 assert_contains '\.digest' \

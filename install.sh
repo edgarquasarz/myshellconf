@@ -269,13 +269,15 @@ if [ "$PKG_MGR" = "apt" ]; then
 
   # lazygit: not in stock apt on most distros — install via official GitHub release (accepted risk).
   # The upstream filename embeds both version and arch
-  # (`lazygit_<version>_linux_x86_64.tar.gz`, with arm64/armv7 variants), so
+  # (`lazygit_<version>_linux_x86_64.tar.gz`, with arm64/armv6 variants), so
   # resolve the release version and derive the architecture from `uname -m`.
+  # Note: lazygit does not publish an armv7 asset; the armv6 build (GOARM=6)
+  # is the one that runs on armv7l hardware.
   LG_ARCH=""
   case "$(uname -m)" in
     x86_64)  LG_ARCH="x86_64" ;;
     aarch64) LG_ARCH="arm64" ;;
-    armv7l)  LG_ARCH="armv7" ;;
+    armv7l)  LG_ARCH="armv6" ;;
     *)       LG_ARCH="" ;;
   esac
   if command -v lazygit &>/dev/null; then
