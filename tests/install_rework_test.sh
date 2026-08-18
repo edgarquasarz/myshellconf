@@ -24,11 +24,11 @@ assert_not_contains() {
 
 assert_contains 'lazygit_\$\{LAZYGIT_VERSION\}_linux_\$\{LG_ARCH\}\.tar\.gz' \
   'lazygit fallback must use the versioned lowercase release asset name'
-assert_contains 'releases/download/\$\{LAZYGIT_VERSION\}/\$LAZYGIT_TARBALL' \
+assert_contains 'releases/download/v\$\{LAZYGIT_VERSION\}/\$LAZYGIT_TARBALL' \
   'lazygit fallback must download from the resolved version tag'
 assert_contains 'aarch64\)[[:space:]]+NVIM_TARBALL_ARCH="arm64"' \
   'Neovim aarch64 mapping must use the arm64 asset suffix'
-assert_contains '"digest"' \
+assert_contains '\.digest' \
   'Neovim fallback must read the release asset digest'
 assert_not_contains 'neovim/releases/download/\$\{NVIM_TAG\}/SHA256SUMS' \
   'Neovim fallback must not request the nonexistent SHA256SUMS asset'

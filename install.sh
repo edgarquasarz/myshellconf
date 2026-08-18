@@ -40,7 +40,7 @@ if [ "$OS" = "Darwin" ]; then
   # Install zoxide
   if [ ! -f "$HOME/.local/bin/zoxide" ]; then
     echo "  ↳ installing zoxide..."
-    curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh 2>/dev/null || echo "  ⚠ zoxide failed to install"
+    curl -fsSL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh || echo "  ⚠ zoxide failed to install"
   else
     echo "  ✓ zoxide already installed"
   fi
@@ -48,7 +48,7 @@ if [ "$OS" = "Darwin" ]; then
   # Install jq (required for zellij-send-keys)
   if ! command -v jq &>/dev/null; then
     echo "  ↳ installing jq..."
-    brew install jq 2>/dev/null || echo "  ⚠ jq failed to install"
+    brew install jq || echo "  ⚠ jq failed to install"
   else
     echo "  ✓ jq already installed"
   fi
@@ -58,21 +58,21 @@ if [ "$OS" = "Darwin" ]; then
   if [ ! -f "$HOME/.config/zellij/plugins/zellij-favs.wasm" ]; then
     echo "  ↳ installing zellij-favs..."
     curl -L https://github.com/JoseMM2002/zellij-favs/releases/download/v1.0.1/zellij-favs.wasm \
-      -o "$HOME/.config/zellij/plugins/zellij-favs.wasm" 2>/dev/null || echo "  ⚠ zellij-favs failed"
+      -o "$HOME/.config/zellij/plugins/zellij-favs.wasm" || echo "  ⚠ zellij-favs failed"
   else
     echo "  ✓ zellij-favs already installed"
   fi
   if [ ! -f "$HOME/.config/zellij/plugins/zellij-send-keys.wasm" ]; then
     echo "  ↳ installing zellij-send-keys..."
     curl -L https://github.com/atani/zellij-send-keys/releases/latest/download/zellij-send-keys.wasm \
-      -o "$HOME/.config/zellij/plugins/zellij-send-keys.wasm" 2>/dev/null || echo "  ⚠ zellij-send-keys failed"
+      -o "$HOME/.config/zellij/plugins/zellij-send-keys.wasm" || echo "  ⚠ zellij-send-keys failed"
   else
     echo "  ✓ zellij-send-keys already installed"
   fi
 
   # Install @rivolink/leaf globally
   echo "  ↳ installing @rivolink/leaf..."
-  npm install -g @rivolink/leaf 2>/dev/null || echo "  ⚠ @rivolink/leaf failed to install"
+  npm install -g @rivolink/leaf || echo "  ⚠ @rivolink/leaf failed to install"
 
   CORE_TOOLS=(
     neovim
@@ -101,7 +101,7 @@ if [ "$OS" = "Darwin" ]; then
       echo "  ✓ $tool already installed"
     else
       echo "  ↳ installing $tool..."
-      brew install "$tool" 2>/dev/null || echo "  ⚠ $tool failed to install"
+      brew install "$tool" || echo "  ⚠ $tool failed to install"
     fi
   done
 fi
@@ -152,7 +152,7 @@ if [ "$PKG_MGR" = "apt" ]; then
     if command -v "$bin" &>/dev/null; then
       echo "  ✓ $bin already installed"
     else
-      echo "  � installing $pkg via apt..."
+      echo "  ↳ installing $pkg via apt..."
       if sudo apt-get install -y "$pkg"; then
         :
       else
@@ -181,14 +181,14 @@ if [ "$PKG_MGR" = "apt" ]; then
   if [ ! -f "$HOME/.config/zellij/plugins/zellij-favs.wasm" ]; then
     echo "  ↳ installing zellij-favs..."
     curl -L https://github.com/JoseMM2002/zellij-favs/releases/download/v1.0.1/zellij-favs.wasm \
-      -o "$HOME/.config/zellij/plugins/zellij-favs.wasm" 2>/dev/null || echo "  ⚠ zellij-favs failed"
+      -o "$HOME/.config/zellij/plugins/zellij-favs.wasm" || echo "  ⚠ zellij-favs failed"
   else
     echo "  ✓ zellij-favs already installed"
   fi
   if [ ! -f "$HOME/.config/zellij/plugins/zellij-send-keys.wasm" ]; then
     echo "  ↳ installing zellij-send-keys..."
     curl -L https://github.com/atani/zellij-send-keys/releases/latest/download/zellij-send-keys.wasm \
-      -o "$HOME/.config/zellij/plugins/zellij-send-keys.wasm" 2>/dev/null || echo "  ⚠ zellij-send-keys failed"
+      -o "$HOME/.config/zellij/plugins/zellij-send-keys.wasm" || echo "  ⚠ zellij-send-keys failed"
   else
     echo "  ✓ zellij-send-keys already installed"
   fi
@@ -200,7 +200,7 @@ if [ "$PKG_MGR" = "apt" ]; then
       echo "  ✓ @rivolink/leaf already installed"
     else
       echo "  ↳ installing @rivolink/leaf..."
-      npm install -g @rivolink/leaf 2>/dev/null || echo "  ⚠ @rivolink/leaf failed to install"
+      npm install -g @rivolink/leaf || echo "  ⚠ @rivolink/leaf failed to install"
     fi
   else
     echo "  ⚠ skipping @rivolink/leaf (npm not on PATH yet — run again after fnm/node install)"
@@ -268,9 +268,9 @@ if [ "$PKG_MGR" = "apt" ]; then
   fi
 
   # lazygit: not in stock apt on most distros — install via official GitHub release (accepted risk).
-  # The upstream filename embeds the arch (`lazygit_Linux_x86_64.tar.gz` /
-  # `lazygit_Linux_arm64.tar.gz` / `lazygit_Linux_armv7.tar.gz`), so we
-  # compute the suffix from `uname -m` rather than hardcoding x86_64.
+  # The upstream filename embeds both version and arch
+  # (`lazygit_<version>_linux_x86_64.tar.gz`, with arm64/armv7 variants), so
+  # resolve the release version and derive the architecture from `uname -m`.
   LG_ARCH=""
   case "$(uname -m)" in
     x86_64)  LG_ARCH="x86_64" ;;
@@ -287,16 +287,23 @@ if [ "$PKG_MGR" = "apt" ]; then
         if [ -z "$LG_ARCH" ]; then
           echo "  ⚠ lazygit: unsupported arch ($(uname -m)) — skipping GitHub fallback"
         else
-          LG_TMP="$(mktemp -d)"
-          if curl -fsSL -o "$LG_TMP/lazygit.tar.gz" \
-              "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_Linux_${LG_ARCH}.tar.gz" \
-            && tar -xzf "$LG_TMP/lazygit.tar.gz" -C "$LG_TMP" lazygit \
-            && sudo install -m 755 "$LG_TMP/lazygit" /usr/local/bin/lazygit; then
-            :
+          LAZYGIT_VERSION="$(curl -fsSL https://api.github.com/repos/jesseduffield/lazygit/releases/latest \
+            | grep -Po '"tag_name": "v\K[^"]*' || true)"
+          if [ -z "$LAZYGIT_VERSION" ]; then
+            echo "  ⚠ lazygit: could not determine latest version"
           else
-            echo "  ⚠ lazygit tarball install failed"
+            LG_TMP="$(mktemp -d)"
+            LAZYGIT_TARBALL="lazygit_${LAZYGIT_VERSION}_linux_${LG_ARCH}.tar.gz"
+            if curl -fsSL -o "$LG_TMP/lazygit.tar.gz" \
+                "https://github.com/jesseduffield/lazygit/releases/download/v${LAZYGIT_VERSION}/$LAZYGIT_TARBALL" \
+              && tar -xzf "$LG_TMP/lazygit.tar.gz" -C "$LG_TMP" lazygit \
+              && sudo install -m 755 "$LG_TMP/lazygit" /usr/local/bin/lazygit; then
+              :
+            else
+              echo "  ⚠ lazygit tarball install failed"
+            fi
+            rm -rf "$LG_TMP"
           fi
-          rm -rf "$LG_TMP"
         fi
       ) \
       || echo "  ⚠ lazygit failed to install"
@@ -388,7 +395,7 @@ if [ "$PKG_MGR" = "apt" ]; then
       echo "  ✓ node@22 already installed (via fnm)"
     else
       echo "  ↳ installing node@22 via fnm..."
-      fnm install 22 &>/dev/null || echo "  � node@22 failed to install"
+      fnm install 22 &>/dev/null || echo "  ⚠ node@22 failed to install"
       fnm default 22 &>/dev/null || true
     fi
     # Make node/npm available to subsequent commands in this script.
@@ -428,7 +435,10 @@ if [ "$PKG_MGR" = "apt" ]; then
         if [ -z "$GO_TARBALL_ARCH" ]; then
           echo "  ⚠ go: unsupported arch ($(uname -m)) — skipping tarball fallback"
         else
-          GO_VERSION="$(curl -fsSL https://go.dev/VERSION?m=text | head -1 || echo "go1.22.5")"
+          GO_VERSION="$(curl -fsSL https://go.dev/VERSION?m=text | head -1 || true)"
+          if [ -z "$GO_VERSION" ]; then
+            GO_VERSION="go1.22.5"
+          fi
           GO_TMP="$(mktemp -d)"
           if curl -fsSL -o "$GO_TMP/go.tar.gz" \
               "https://go.dev/dl/${GO_VERSION}.linux-${GO_TARBALL_ARCH}.tar.gz" \
@@ -469,12 +479,10 @@ if [ "$PKG_MGR" = "apt" ]; then
   fi
 
   # Neovim newer-version fallback — apt's neovim is often < 0.10 on older distros.
-  # We download the upstream neovim release tarball (arch-specific, with
-  # SHA256SUMS verification), extract under $HOME/.local/share/nvim-stable
-  # (not /tmp — world-readable and ephemeral, breaks the symlink on reboot),
-  # and link the binary from $HOME/.local/bin/nvim which we put ahead of
-  # /usr/bin above. The apt neovim package is left intact so its apt deps
-  # still resolve.
+  # Download the arch-specific upstream tarball, verify it against the SHA-256
+  # digest exposed by GitHub's release-assets API, then extract under
+  # $HOME/.local/share/nvim-stable. The apt package remains installed so its
+  # dependencies still resolve.
   if command -v nvim &>/dev/null; then
     NVIM_VERSION_RAW="$(nvim --version | head -1 | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1)"
     NVIM_MAJOR=$(echo "$NVIM_VERSION_RAW" | cut -d. -f1)
@@ -486,28 +494,27 @@ if [ "$PKG_MGR" = "apt" ]; then
       NVIM_TARBALL_ARCH=""
       case "$(uname -m)" in
         x86_64)  NVIM_TARBALL_ARCH="x86_64" ;;
-        aarch64) NVIM_TARBALL_ARCH="aarch64" ;;
+        aarch64) NVIM_TARBALL_ARCH="arm64" ;;
         *)       NVIM_TARBALL_ARCH="" ;;
       esac
       if [ -z "$NVIM_TARBALL_ARCH" ]; then
         echo "  ⚠ neovim: unsupported arch ($(uname -m)) — skipping"
       else
-        # Pin to latest tag so SHA256SUMS applies to the tarball we fetch.
-        NVIM_TAG="$(curl -fsSL https://api.github.com/repos/neovim/neovim/releases/latest \
-          | grep -Po '"tag_name": "\K[^"]*' || true)"
-        if [ -z "$NVIM_TAG" ]; then
-          echo "  ⚠ neovim: could not determine latest release — skipping"
-        else
-          NVIM_TARBALL="nvim-linux-${NVIM_TARBALL_ARCH}.tar.gz"
-          NVIM_TMP="$(mktemp -d)"
-          NVIM_SHA_FILE="$NVIM_TMP/SHA256SUMS"
-          if curl -fsSL -o "$NVIM_TMP/$NVIM_TARBALL" \
-              "https://github.com/neovim/neovim/releases/download/${NVIM_TAG}/$NVIM_TARBALL" \
-            && curl -fsSL -o "$NVIM_SHA_FILE" \
-              "https://github.com/neovim/neovim/releases/download/${NVIM_TAG}/SHA256SUMS"; then
-            EXPECTED_SHA="$(awk -v f="$NVIM_TARBALL" '$2 == f {print $1}' "$NVIM_SHA_FILE")"
-            ACTUAL_SHA="$(sha256sum "$NVIM_TMP/$NVIM_TARBALL" | awk '{print $1}')"
-            if [ -n "$EXPECTED_SHA" ] && [ "$EXPECTED_SHA" = "$ACTUAL_SHA" ]; then
+        NVIM_TARBALL="nvim-linux-${NVIM_TARBALL_ARCH}.tar.gz"
+        NVIM_TMP="$(mktemp -d)"
+        NVIM_RELEASE_JSON="$NVIM_TMP/release.json"
+        if curl -fsSL -o "$NVIM_RELEASE_JSON" \
+            https://api.github.com/repos/neovim/neovim/releases/latest; then
+          NVIM_TAG="$(jq -r '.tag_name // empty' "$NVIM_RELEASE_JSON")"
+          NVIM_EXPECTED_SHA="$(jq -r --arg name "$NVIM_TARBALL" \
+            '.assets[] | select(.name == $name) | .digest // empty' "$NVIM_RELEASE_JSON" \
+            | sed 's/^sha256://')"
+          if [ -z "$NVIM_TAG" ] || [ -z "$NVIM_EXPECTED_SHA" ]; then
+            echo "  ⚠ neovim: release tag or asset digest unavailable — refusing to install"
+          elif curl -fsSL -o "$NVIM_TMP/$NVIM_TARBALL" \
+              "https://github.com/neovim/neovim/releases/download/${NVIM_TAG}/$NVIM_TARBALL"; then
+            NVIM_ACTUAL_SHA="$(sha256sum "$NVIM_TMP/$NVIM_TARBALL" | awk '{print $1}')"
+            if [ "$NVIM_EXPECTED_SHA" = "$NVIM_ACTUAL_SHA" ]; then
               NVIM_SHARE="$HOME/.local/share/nvim-stable"
               rm -rf "$NVIM_SHARE"
               mkdir -p "$NVIM_SHARE"
@@ -518,10 +525,12 @@ if [ "$PKG_MGR" = "apt" ]; then
               echo "  ⚠ neovim sha256 mismatch — refusing to install"
             fi
           else
-            echo "  ⚠ neovim tarball or SHA256SUMS download failed"
+            echo "  ⚠ neovim tarball download failed"
           fi
-          rm -rf "$NVIM_TMP"
+        else
+          echo "  ⚠ neovim release metadata download failed"
         fi
+        rm -rf "$NVIM_TMP"
       fi
     fi
   else
