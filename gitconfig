@@ -31,10 +31,8 @@
 [core]
 	whitespace=fix,-indent-with-non-tab,trailing-space,cr-at-eol
 [user]
-	# Personal info: set per-machine with `git config --global user.name "..."`
-	# and `git config --global user.email "..."`. Left commented as placeholder.
-	# name = Your Name
-	# email = you@example.com
+	name = Edgar Quasar
+	email = edgarquasarz@proton.me
 [url "git@github.com:"]
 	insteadOf = https://github.com/
 [url "git://"]
