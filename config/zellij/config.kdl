@@ -176,7 +176,8 @@ keybinds clear-defaults=true {
         bind "Alt o" { MoveTab "right"; }
         bind "Alt p" { TogglePaneInGroup; }
         bind "Alt Shift p" { ToggleGroupMarking; }
-        bind "Ctrl q" { Quit; }
+        // bind "Ctrl q" { Quit; }  // disabled: accidental Ctrl+Q was killing the whole session
+        unbind "Ctrl q"
     }
     shared_except "locked" "move" {
         bind "Ctrl h" { SwitchToMode "move"; }
